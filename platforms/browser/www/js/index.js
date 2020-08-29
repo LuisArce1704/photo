@@ -66,3 +66,74 @@ function cameraTakePicture() {
        alert('Failed because: ' + message); 
     } 
  }
+
+ function Actualizar(){
+
+    var imagen = $$('#myImage').val();
+    app7.preloader.show('blue');
+  
+    app7.request({
+      url: 'http://localhost/team/api/pruebadebase.php',
+      data:{imagen:imagen},
+      method: 'POST', 
+      crossDomain: true,
+      success:function(data){
+  
+        app7.preloader.hide();
+        var objson = JSON.parse(data);
+        if(objson.status_message == "CORRECTO"){
+       
+          alert("La pieza se registro correctamente");
+          mainView.router.navigate('/index/',{reloadCurrent:true});
+  
+          }else{
+  
+            alert("Hubo un error intentalo nuevamente");
+          }
+        },
+        error:function(error){
+    
+          app7.preloader.hide();
+        }
+      });
+  
+  }
+
+  $$(document).on('page:init', '.page[data-name="index"]', function (e) {
+  
+     
+
+    app7.request({
+      url: 'http://localhost/team/api/pruebabasededatos2.php',
+      data:{},
+      method: 'POST', 
+      crossDomain: true,
+      success:function(data){
+  
+        app7.preloader.hide();
+        var objson = JSON.parse(data);
+        var imagen="";
+  
+       
+  
+          console.log(objson.data[x].imagen);
+  
+          imagen = +objson.data[x].imagen;
+  
+          $$('#myImage').append(imagen);
+         
+
+      
+     },
+     error:function(error){
+    
+      app7.preloader.hide();
+    }
+    });
+
+ 
+    
+    
+
+    
+  });
